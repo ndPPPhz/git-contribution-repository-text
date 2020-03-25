@@ -47,6 +47,9 @@ function drawBlock(block, letter) {
 		case "A":
 			drawA(block);
 			break;
+		case "B":
+			drawB(block);
+			break;
 		case "N":
 			drawN(block);
 			break;
@@ -80,6 +83,20 @@ function drawA(block, color = default_color) {
 		set(block, y, 3);
 	});
 	set(block, 1, 1);set(block, 3, 1); set(block, 2,0);
+}
+
+function drawB(block, color = default_color) {
+	// draw the verticals | and \
+	range(block.length,0).forEach((n) => {
+		set(block, 0, n);
+	});
+
+	range(2,1).forEach((n) => {
+		set(block, n, 0);
+		set(block, n, 2);
+		set(block, n, block.length - 1);
+	});
+	set(block, 3,1);set(block, 3,3);
 }
 
 function drawN(block, color = default_color) {
