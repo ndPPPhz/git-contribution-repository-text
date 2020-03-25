@@ -1,6 +1,6 @@
 width_blocks = 7;
 default_color = '#239a3b';
-background_color = '#888888';
+background_color = '#ebedf0';
 word = "ANNINO";
 
 function apply() {
@@ -35,6 +35,14 @@ function drawCanvases(weeks_blocks) {
 }
 
 function drawBlock(block, letter) {
+	block.pop();
+	block.shift();
+	
+	block.forEach((week) => {
+		week.days.pop();
+		week.days.shift();
+	});
+
 	switch (letter) {
 		case "A":
 			drawA(block);
@@ -57,64 +65,47 @@ function set(block, x, y, color = default_color) {
 	block[x].days[y].setAttribute('fill',color);
 }
 
+function range(length, from) {
+	return Array.from({length: length}, (_, n) => n+from);
+}
+
 function drawA(block, color = default_color) {
-	// draw the first vertical |
-	Array.from({length: 4}, (_, n) => n+3).forEach((y) => {
-		set(block, 0, y, color);
-	});
-	// draw the final vertical |
-	Array.from({length: 4}, (_, n) => n+3).forEach((y) => {
-		set(block, width_blocks - 1, y, color);
+	// draw the verticals |
+	range(3,2).forEach((y) => {
+		set(block, 0, y);
+		set(block, block.length -1, y);
 	});
 
-	set(block, 1, 2); set(block, 5, 2);
-	set(block, 2, 1); set(block, 4, 1);
-	set(block, 3, 0);
-
-	Array.from({length: 5}, (_, n) => n+1).forEach((x) => {
-		set(block, x, 4, color);
+	range(3,1).forEach((y) => {
+		set(block, y, 3);
 	});
+	set(block, 1, 1);set(block, 3, 1); set(block, 2,0);
 }
 
 function drawN(block, color = default_color) {
-		// draw the verticals |
-		Array.from({length: width_blocks}, (_, n) => n).forEach((n) => {
-			set(block, 0, n, color);
-			set(block, width_blocks - 1, n, color);
-		});
-
-		// draw the \
-		Array.from({length: 5}, (_, n) => n+1).forEach((n) => {
-			set(block, n, n, color);
-		});
+	// draw the verticals | and \
+	range(block.length,0).forEach((n) => {
+		set(block, 0, n);
+		set(block, block.length -1, n);
+		set(block, n, n);
+	});
 }
 
 function drawO(block, color = default_color) {
-	// draw the verticals |
-	Array.from({length: 4}, (_, n) => n).forEach((n) => {
-		set(block, n, 3-n, color);
-		set(block, 3+n, 6-n, color);
-		set(block, 3+n, n, color);
-		set(block, n, 3+n, color);
+	range(5,0).forEach((n) => {
+		set(block, n, 0); // -
+		set(block, n, block.length - 1);
+		set(block, 0, n);
+		set(block, block.length - 1, n); // -
 	});
 }
 
 function drawI(block, color = default_color) {
-	block_length = block.length;
-	is_odd = (block_length % 2) == 0;
-	mid_index = Math.floor(is_odd ? block_length / 2 : block_length / 2 + 1);
-
-	block[mid_index].days.forEach((y_day) => {
-	   y_day.setAttribute('fill', default_color);
+	range(5,0).forEach((n) => {
+		set(block, 1, n);
+		set(block, 2, n);
+		set(block, 3, n);
 	});
-
-	block[mid_index-2].days.forEach((y_day) => {
-		y_day.setAttribute('fill', default_color);
-	 });
-
-	 block[mid_index-1].days.forEach((y_day) => {
-		y_day.setAttribute('fill', default_color);
-	 });
 }
 
 function fill(block, color = default_color) {
