@@ -4,9 +4,10 @@
 # git-contribution-repository-text
 A javascript script which draws strings within the "Year contribution" canvas
 
-## Usage
-
 ![gittext](https://user-images.githubusercontent.com/6486741/77680279-a6ee6500-6f8b-11ea-9e08-cb9b723957b8.gif)
+
+
+## Usage
 
 - You can either copy the content of the script in the browser's console or use greasemonkey / tampermonkey to integrate the script.
 
@@ -15,8 +16,8 @@ A javascript script which draws strings within the "Year contribution" canvas
 
 Parameters | Description
 ------------ | -------------
-`w` | The word you want to apply ( at the moment, the script will only prints the first 7 letters ) . DEFAULT = "HELLO" 
-`bg_color` | The background color. DEFAULT = "`#ebedf0`"
+`w` | The word you want to apply ( at the moment, the script will only prints the first 7 letters ) . DEFAULT = `HELLO` 
+`bg_color` | The background color. DEFAULT = `#ebedf0`
 `color` | The letters' color. DEFAULT = `#239a3b`
 
 
