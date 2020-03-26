@@ -1,19 +1,12 @@
-width_blocks = 7;
 default_color = '#239a3b';
 background_color = '#ebedf0';
 word = "ANNINO";
 
 function apply() {
-	// Chunks the array in blocks of size elements
-	const chunk = (arr, size) =>
-	  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
-	    arr.slice(i * size, i * size + size)
-	  );
-
 	// querySelecor returns an object (HTMLCollection)
-	contributions = document.querySelector('g[data-hydro-click-hmac]');
-	// Convert it to an array
-	weeks = [...contributions.children];
+	const contributions = document.querySelector('g[data-hydro-click-hmac]');
+	// Convert it to an array containing all the children nodes
+	const weeks = [...contributions.children];
 
 	weeks.forEach((week) => {
 		// Convert HTMLCollection (returned by .children) into an array
@@ -24,7 +17,16 @@ function apply() {
 		})
 	});
 
-	weeks_blocks = chunk(weeks,width_blocks);
+	// Chunks the array in blocks of size elements
+	const chunk = (arr, size) =>
+		Array.from( { length: Math.ceil(arr.length / size) }, (_, i) =>
+	    	arr.slice(i * size, i * size + size)
+	 );
+
+	// Each blocks contains 7 weeks now then
+	// 7 horizontal lines (weeks) x 7 vertical lines (days)
+	const width_blocks = 7;
+	const weeks_blocks = chunk(weeks,width_blocks);
 	drawCanvases(weeks_blocks);
 }
 
@@ -35,100 +37,19 @@ function drawCanvases(weeks_blocks) {
 }
 
 function drawBlock(block, letter) {
-	block.pop();
-	block.shift();
+	// Remove the first and the last vertical and horizontal line of each block
+	const insetBlock = (block) => {
+		block.pop();
+		block.shift();
 	
-	block.forEach((week) => {
-		week.days.pop();
-		week.days.shift();
-	});
+		block.forEach((week) => {
+			week.days.pop();
+			week.days.shift();
+		});
+	};
 
-	switch (letter) {
-		case 'A':
-			drawA(block);
-			break;
-		case 'B':
-			drawB(block);
-			break;
-		case 'C':
-			drawC(block);
-			break;
-		case 'D':
-			drawD(block);
-			break;
-		case 'E':
-			drawE(block);
-			break;
-		case 'F':
-			drawF(block);
-			break;
-		case 'G':
-			drawG(block);
-			break;
-		case 'H':
-			drawH(block);
-			break;
-		case 'I':
-			drawI(block);
-			break;
-		case 'J':
-			drawJ(block);
-			break;
-		case 'K':
-			drawK(block);
-			break;
-		case 'L':
-			drawL(block);
-			break;
-		case 'M':
-			drawM(block);
-			break;
-		case 'N':
-			drawN(block);
-			break;
-		case 'O':
-			drawO(block);
-			break;
-		case 'P':
-			drawP(block);
-			break;
-		case 'Q':
-			drawQ(block);
-			break;
-		case 'R':
-			drawR(block);
-			break;
-		case 'S':
-			drawS(block);
-			break;
-		case 'T':
-			drawT(block);
-			break;
-		case 'U':
-			drawU(block);
-			break;
-		case 'V':
-			drawV(block);
-			break;
-		case 'W':
-			drawW(block);
-			break;
-		case 'X':
-			drawX(block);
-			break;
-		case 'Y':
-			drawY(block);
-			break;
-		case 'Z':
-			drawZ(block);
-			break;
-		default:
-			break;
-	}
-}
-
-function set(block, x, y, color = default_color) {
-	block[x].days[y].setAttribute('fill',color);
+	insetBlock(block);
+	this[`draw${letter}`](block, default_color);
 }
 
 function range(length, from) {
@@ -137,18 +58,18 @@ function range(length, from) {
 
 function drawA(block, color = default_color) {
 	drawF(block, color);
-	drawFullLastVertical(block, color);
+	drawFullLastVertical(block, color); // |
 }
 
 function drawB(block, color = default_color) {
-	drawFullFirstVertical(block, color);
+	drawFullFirstVertical(block, color); // |
 	range(2,1).forEach((n) => {
-		set(block, n, 0);
-		set(block, n, 2);
-		set(block, n, block.length - 1);
+		set(block, n, 0, color);
+		set(block, n, 2, color);
+		set(block, n, block.length - 1, color);
 	});
-	set(block, 3,1);
-	set(block, 3,3);
+	set(block, 3, 1, color);
+	set(block, 3, 3, color);
 }
 
 function drawC(block, color = default_color) {
@@ -157,11 +78,11 @@ function drawC(block, color = default_color) {
 }
 
 function drawD(block, color = default_color) {
-	drawFullFirstVertical(block, color);
+	drawFullFirstVertical(block, color); // |
 	range(3,1).forEach((n) => {
-		set(block, n, 0); // -
-		set(block, n, block.length -1); // -
-		set(block, block.length -1, n); // |
+		set(block, n, 0, color); // -
+		set(block, n, block.length -1, color); // -
+		set(block, block.length -1, n, color); // |
 	});
 }
 
@@ -198,18 +119,18 @@ function drawI(block, color = default_color) {
 function drawJ(block, color = default_color) {
 	drawT(block, color);
 	range(2,0).forEach((n) => {
-		set(block, n, block.length - 1); // _
+		set(block, n, block.length - 1, color); // _
 	});
 }
 
 function drawK(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, 0, n); // |
+		set(block, 0, n, color); // |
 	});
 
 	range(3,1).forEach((n) => {
-		set(block, n, 3-n); // \
-		set(block, n, n+1); // \
+		set(block, n, 3-n, color); // \
+		set(block, n, n+1, color); // \
 	});
 }
 
@@ -320,19 +241,19 @@ function drawFullFirstVertical(block, color = default_color) {
 
 function drawFullLastVertical(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, block.length -1, n);
+		set(block, block.length -1, n, color);
 	});
 }
 
 function drawFullFirstHorizontal(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, n, 0);
+		set(block, n, 0, color);
 	});
 }
 
 function drawFullLastHorizontal(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, n, block.length -1);
+		set(block, n, block.length -1, color);
 	});
 }
 
@@ -350,13 +271,13 @@ function drawFullMidVertical(block, color = default_color) {
 
 function drawFull13Bisect(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, n, n);
+		set(block, n, n, color);
 	});
 }
 
 function drawFull24Bisect(block, color = default_color) {
 	range(block.length,0).forEach((n) => {
-		set(block, n,  block.length - 1 - n);
+		set(block, n,  block.length - 1 - n, color);
 	});
 }
 
@@ -372,4 +293,8 @@ function fill(block, color = default_color) {
 		   y_day.setAttribute('fill', color);
 	   });
    });
+}
+
+function set(block, x, y, color = default_color) {
+	block[x].days[y].setAttribute('fill', color);
 }
