@@ -1,11 +1,7 @@
-<p align ="center"><img width="948" alt="Screenshot 2020-03-26 at 17 55 52" src="https://user-images.githubusercontent.com/6486741/77679894-1a43a700-6f8b-11ea-9570-1d136d99750d.png"><br/>
-<img src="https://img.shields.io/badge/javascript--green"></p>
-
 # git-contribution-repository-text
 A javascript script which draws strings within the "Year contribution" canvas
 
-![gittext](https://user-images.githubusercontent.com/6486741/77680279-a6ee6500-6f8b-11ea-9e08-cb9b723957b8.gif)
-
+<p align ="center"><img width="948" alt="Screenshot 2020-03-26 at 17 55 52" src="https://user-images.githubusercontent.com/6486741/77679894-1a43a700-6f8b-11ea-9570-1d136d99750d.png"><br/>
 
 ## Usage
 
@@ -28,6 +24,9 @@ If you want to play around with the script you can
 - Run a local webserver. E.g. (If you have PHP installed) `php -S localhost:8000`
 - Open a browser and go to `localhost:8000`
 - Change values
+
+## Example
+![gittext](https://user-images.githubusercontent.com/6486741/77680279-a6ee6500-6f8b-11ea-9e08-cb9b723957b8.gif)
 
 ## License
 
